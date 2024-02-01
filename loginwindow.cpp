@@ -16,7 +16,6 @@ LoginWindow::~LoginWindow()
 void LoginWindow::on_pushButton_access_clicked()
 {
     loginFunction();
-    QSqlDatabase::removeDatabase("QSQLITE");
     hide();
     databaseWindow = new DatabaseWindow(this);
     databaseWindow->show();
@@ -25,7 +24,7 @@ void LoginWindow::on_pushButton_access_clicked()
 void LoginWindow::loginFunction() {
     QDir databasePath;
     QString path = databasePath.currentPath()+"/users.db";
-    DBConnection= QSqlDatabase::addDatabase("QSQLITE");
+    QSqlDatabase DBConnection =  QSqlDatabase::addDatabase("QSQLITE", "DBConnector");
     DBConnection.setDatabaseName(path);
     if (DBConnection.open()) {
         qDebug() << "Database is Connected";

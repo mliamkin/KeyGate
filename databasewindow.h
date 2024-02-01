@@ -19,8 +19,7 @@ public:
 
 private:
     Ui::DatabaseWindow *ui;
-    QSqlDatabase DBConnection;
-    void fillTable();
+    void fillTable(QSqlDatabase DBConnection);
     bool filling;
 };
 

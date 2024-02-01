@@ -9,7 +9,7 @@ DatabaseWindow::DatabaseWindow(QWidget *parent)
 
     QDir databasePath;
     QString path = databasePath.currentPath()+"/users.db";
-    DBConnection= QSqlDatabase::addDatabase("QSQLITE");
+    QSqlDatabase DBConnection = QSqlDatabase::database("DBConnector");
     DBConnection.setDatabaseName(path);
     if (DBConnection.open()) {
         qDebug() << "Database is Connected";
@@ -17,9 +17,8 @@ DatabaseWindow::DatabaseWindow(QWidget *parent)
     else {
         qDebug() << "Database is Not Connected";
     }
-
     filling = false;
-    fillTable();
+    fillTable(DBConnection);
 }
 
 DatabaseWindow::~DatabaseWindow()
@@ -27,7 +26,7 @@ DatabaseWindow::~DatabaseWindow()
     delete ui;
 }
 
-void DatabaseWindow::fillTable() {
+void DatabaseWindow::fillTable(QSqlDatabase DBConnection) {
     if (filling) return;
     filling = true;
 
@@ -37,13 +36,14 @@ void DatabaseWindow::fillTable() {
     ui->tableWidget->setRowCount(query.value(0).toInt());
     qDebug() << query.value(0).toInt();
 
-    query.exec("SELECT id AND passwords FROM users");
+    query.exec("SELECT id, password FROM users");
     int row = 0;
-    for (query.first(); query.isValid(); query.next(), ++row) {
+    while (query.next()) {
         ui->tableWidget->setItem(row, 0, new QTableWidgetItem(query.value(0).toString()));
         qDebug() << query.value(0).toString();
         ui->tableWidget->setItem(row, 1, new QTableWidgetItem(query.value(1).toString()));
         qDebug() << query.value(1).toString();
+        row++;
     }
 
     filling = false;

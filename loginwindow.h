@@ -25,6 +25,5 @@ private slots:
 private:
     Ui::LoginWindow *ui;
     DatabaseWindow *databaseWindow;
-    QSqlDatabase DBConnection;
 };
 #endif // LOGINWINDOW_H
