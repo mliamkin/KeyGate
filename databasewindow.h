@@ -17,10 +17,14 @@ public:
     explicit DatabaseWindow(QWidget *parent = nullptr);
     ~DatabaseWindow();
 
+public slots:
+    void loginComplete(int _userId);
+
 private:
     Ui::DatabaseWindow *ui;
     void fillTable(QSqlDatabase DBConnection);
     bool filling;
+    int userId = INT_MAX;
 };
 
 #endif // DATABASEWINDOW_H

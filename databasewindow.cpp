@@ -7,6 +7,8 @@ DatabaseWindow::DatabaseWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //Find a way to start db check only after showing this window
+
     QDir databasePath;
     QString path = databasePath.currentPath()+"/users.db";
     QSqlDatabase DBConnection = QSqlDatabase::database("DBConnector");
@@ -26,6 +28,10 @@ DatabaseWindow::~DatabaseWindow()
     delete ui;
 }
 
+void DatabaseWindow::loginComplete(int _userId) {
+    userId = _userId;
+}
+
 void DatabaseWindow::fillTable(QSqlDatabase DBConnection) {
     if (filling) return;
     filling = true;
@@ -34,15 +40,12 @@ void DatabaseWindow::fillTable(QSqlDatabase DBConnection) {
     query.exec("SELECT count(id) FROM users");
     query.first();
     ui->tableWidget->setRowCount(query.value(0).toInt());
-    qDebug() << query.value(0).toInt();
-
+    qDebug() << "What";
     query.exec("SELECT id, password FROM users");
     int row = 0;
     while (query.next()) {
         ui->tableWidget->setItem(row, 0, new QTableWidgetItem(query.value(0).toString()));
-        qDebug() << query.value(0).toString();
         ui->tableWidget->setItem(row, 1, new QTableWidgetItem(query.value(1).toString()));
-        qDebug() << query.value(1).toString();
         row++;
     }
 

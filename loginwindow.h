@@ -22,6 +22,9 @@ private slots:
     void on_pushButton_access_clicked();
     void loginFunction();
 
+signals:
+    void loginComplete(int _userId);
+
 private:
     Ui::LoginWindow *ui;
     DatabaseWindow *databaseWindow;
