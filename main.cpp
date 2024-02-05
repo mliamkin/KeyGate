@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     LoginWindow lw;
     DatabaseWindow dw;
-    QObject::connect(&lw, SIGNAL(loginComplete(int)), &dw, SLOT(loginComplete(int)));
+    //QObject::connect(&lw, SIGNAL(loginComplete(int)), &dw, SLOT(loginComplete(int)));
     lw.show();
     return a.exec();
 }

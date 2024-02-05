@@ -15,9 +15,10 @@ LoginWindow::~LoginWindow()
 
 void LoginWindow::on_pushButton_access_clicked()
 {
+    databaseWindow = new DatabaseWindow(this);
+    QObject::connect(this, SIGNAL(loginComplete(int)), databaseWindow, SLOT(loginComplete(int)));
     loginFunction();
     hide();
-    databaseWindow = new DatabaseWindow(this);
     databaseWindow->show();
 }
 
@@ -55,13 +56,14 @@ void LoginWindow::loginFunction() {
             query.next();
             currentId = query.value(0).toInt();
             qDebug() << currentId;
-            QString newUserTable = "CREATE TABLE passwordsUser" + QString::number(currentId) + "(org TEXT, password TEXT, id INTEGER UNIQUE, password_id INTEGER, FOREIGN KEY (password_id) REFERENCES users(id), PRIMARY KEY(id));";
+            QString newUserTable = "CREATE TABLE passwordsUser" + QString::number(currentId) + "(org TEXT, password TEXT, id INTEGER UNIQUE, PRIMARY KEY(id));";
             qDebug() << newUserTable;
             if (!query.exec(newUserTable)) {
                 qDebug() << "Failure in creating new table";
             }
             QMessageBox::information(this, "Login", "New Database Forming");
         }
+        qDebug() << currentId;
         emit loginComplete(currentId);
     }
     else {
